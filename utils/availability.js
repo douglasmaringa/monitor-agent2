@@ -9,12 +9,24 @@ async function performWebsiteAvailabilityTest(url, retries = 1) {
       const response = await axios.get(url);
       console.log(response)
 
-      // Check the response status code
       if (response.status === 200) {
-        return "Up"; // Website is up
+        return {
+          result: "Up",
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+          // Add other relevant properties here
+        };
       } else {
-        return "Down"; // Website is down
+        return {
+          result: "Down",
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+          // Add other relevant properties here
+        };
       }
+      
     } catch (error) {
       console.error("Error performing website availability test:", error);
       attempt++;

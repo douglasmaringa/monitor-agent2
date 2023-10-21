@@ -22,12 +22,13 @@ router.post("/", async (req, res) => {
          // Perform the website availability test
          const testResult = await performWebsiteAvailabilityTest(url);
          // Return the test result as the response
-         res.status(200).json({ availability: testResult});
+         console.log(testResult)
+         res.status(200).json({ availability: testResult.result,data:testResult});
     }else if(type == "ping"){
          
          // Perform the ping test
          const pingResult = await performPingTest(url);
-         res.status(200).json({ ping: pingResult});
+         res.status(200).json({ ping: pingResult.status,data:pingResult});
     }else{
          // Perform the port check
         const portResult = await performPortCheck(url, port);
@@ -49,19 +50,19 @@ async function performPingTest(destination, retries = 3, delay = 1000) {
       ping.promise.probe(destination)
         .then((response) => {
           if (!isCancelled && response.alive) {
-            resolve("Reachable"); // Target is reachable
+            resolve({ status: "Reachable", output: response.output });
           } else {
             attempts++;
             if (attempts < retries && !isCancelled) {
               setTimeout(startPing, delay); // Retry after delay
             } else {
-              resolve("Unreachable"); // Target is unreachable after retries
+              resolve({ status: "Unreachable", output: response.output });
             }
           }
         })
         .catch((error) => {
           console.error("Error performing ping test:", error);
-          resolve("Unreachable"); // Error occurred during the ping test
+          resolve({ status: "Reachable", output: "Error performing ping test" });
         });
     };
 

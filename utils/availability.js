@@ -37,7 +37,7 @@ async function performWebsiteAvailabilityTest(url, retries = 1) {
         // The error is from the response, handle it accordingly
         return {
           result: "Down",
-          status: `${error?.code} ${error.cause}`
+          status: `${error.code} ${error.cause}`
         };
       } 
 

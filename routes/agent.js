@@ -22,17 +22,17 @@ router.post("/", async (req, res) => {
          // Perform the website availability test
          const testResult = await performWebsiteAvailabilityTest(url);
          // Return the test result as the response
-         console.log(testResult)
-         res.status(200).json({ availability: testResult.result,data:testResult});
+         //console.log(testResult)
+         res.status(200).json({ availability: testResult.result,status:testResult.status});
     }else if(type == "ping"){
          
          // Perform the ping test
          const pingResult = await performPingTest(url);
-         res.status(200).json({ ping: pingResult.status,data:pingResult});
+         res.status(200).json({ ping: pingResult.status,status:pingResult.output});
     }else{
          // Perform the port check
         const portResult = await performPortCheck(url, port);
-        res.status(200).json({ port: portResult });
+        res.status(200).json({ port: portResult,status:portResult });
     }
    
   } catch (error) {
